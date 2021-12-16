@@ -1,5 +1,5 @@
 package com.mike.wordcount.controller;
-import com.mike.wordcount.controller.WordCountController;
+import com.mike.wordcount.counter.WordCounter;
 import com.mike.wordcount.reader.FileParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,9 +30,13 @@ public class WordCountControllerTest {
     @Mock
     private RedirectAttributes mockRedirectAttributes;
 
+    @Mock
+    private WordCounter mockWordCounter;
+
     @BeforeEach
     public void setup(){
         wordCountController.setFileParser(mockFileParser);
+        wordCountController.setWordCounter(mockWordCounter);
 
         createMockMultipartFile();
     }
@@ -61,6 +65,15 @@ public class WordCountControllerTest {
         String parsedFileContents = wordCountController.uploadFile(mockMultipartFile, mockRedirectAttributes);
 
         assert(parsedFileContents.equals("Hi There"));
+    }
+
+    @Test
+    public void shouldCountWords(){
+        when(mockFileParser.parseFile(mockMultipartFile)).thenReturn("Hi There");
+
+        String parsedFileContents = wordCountController.uploadFile(mockMultipartFile, mockRedirectAttributes);
+
+        verify(mockWordCounter).getWordCountStatsFrom(parsedFileContents);
     }
 
     private void createMockMultipartFile() {

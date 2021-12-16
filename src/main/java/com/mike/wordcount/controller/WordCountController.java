@@ -1,6 +1,8 @@
 package com.mike.wordcount.controller;
 
+import com.mike.wordcount.counter.WordCounter;
 import com.mike.wordcount.reader.FileParser;
+import com.mike.wordcount.stats.WordCountStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,9 @@ public class WordCountController {
     @Autowired
     private FileParser fileParser;
 
+    @Autowired
+    private WordCounter wordCounter;
+
     @GetMapping("/wordcount")
     public String getWordCountFor() {
         getFileParser().readFile(new String());
@@ -24,9 +29,11 @@ public class WordCountController {
 
     @PostMapping("/fileupload")
     public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+
         String parsedFile = getFileParser().parseFile(file);
-        System.out.println("File Content : " + parsedFile);
-        return parsedFile;
+        WordCountStats wordCountStats = getWordCounter().getWordCountStatsFrom(parsedFile);
+
+        return parsedFile ;
     }
 
     public FileParser getFileParser() {
@@ -35,5 +42,13 @@ public class WordCountController {
 
     public void setFileParser(FileParser fileParser) {
         this.fileParser = fileParser;
+    }
+
+    public WordCounter getWordCounter() {
+        return wordCounter;
+    }
+
+    public void setWordCounter(WordCounter wordCounter) {
+        this.wordCounter = wordCounter;
     }
 }
