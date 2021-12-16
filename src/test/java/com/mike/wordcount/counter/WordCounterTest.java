@@ -7,8 +7,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.comparesEqualTo;
@@ -30,7 +31,7 @@ public class WordCounterTest {
     @BeforeEach
     public void setup(){
         setExampleFileContents("Hi There, hope you're having a nice day!");
-        setExampleWords(new String[]{"Hi", "There"});
+        setExampleWords(new String[]{"Hi", "There", "Nice", "To", "See", "You"});
     }
 
     @Test
@@ -43,10 +44,18 @@ public class WordCounterTest {
     @Test
     public void shouldLoopThroughAllWordsAndCountLengths(){
 
-        HashMap<Integer,Integer> exampleWordLengths = wordCounter.getLengthsOfWords(exampleWords);
+        int[] exampleWordResults = {2,2,1,1};
 
-        for(int i=0;i<getExampleWords().length;i++){
-            assertEquals(exampleWordLengths.get(getExampleWords()[i].length()),new Integer(getExampleWords()[i].length()));
+        HashMap<Integer,Integer> exampleWordLengths = wordCounter.getWordLengthsFrom(exampleWords);
+
+        Iterator exampleWordLengthsIterator = exampleWordLengths.entrySet().iterator();
+
+        int i=0;
+        while (exampleWordLengthsIterator.hasNext()) {
+            Map.Entry mapElement = (Map.Entry)exampleWordLengthsIterator.next();
+
+            assertEquals(mapElement.getValue(),new Integer(exampleWordResults[i]));
+            i++;
         }
     }
 

@@ -1,6 +1,7 @@
 package com.mike.wordcount.controller;
 import com.mike.wordcount.counter.WordCounter;
 import com.mike.wordcount.reader.FileParser;
+import com.mike.wordcount.stats.WordCountStats;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -12,6 +13,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
+import java.util.HashMap;
 
 import static org.mockito.Mockito.*;
 
@@ -33,12 +36,18 @@ public class WordCountControllerTest {
     @Mock
     private WordCounter mockWordCounter;
 
+    private WordCountStats exampleWordCountStats;
+
     @BeforeEach
     public void setup(){
         wordCountController.setFileParser(mockFileParser);
         wordCountController.setWordCounter(mockWordCounter);
 
         createMockMultipartFile();
+        exampleWordCountStats = new WordCountStats();
+        exampleWordCountStats.setNumberOfWords(3);
+        exampleWordCountStats.setFileContent("Hi There");
+        exampleWordCountStats.setWordLengths(new HashMap<Integer, Integer>());
     }
 
     @Test
@@ -52,6 +61,9 @@ public class WordCountControllerTest {
     @Test
     public void shouldCallFileParser() {
 
+        when(mockFileParser.parseFile(mockMultipartFile)).thenReturn("Hi There");
+        when(mockWordCounter.getWordCountStatsFrom("Hi There")).thenReturn(exampleWordCountStats);
+        
         wordCountController.uploadFile(mockMultipartFile, mockRedirectAttributes);
 
         verify(mockFileParser).parseFile(mockMultipartFile);
@@ -61,6 +73,7 @@ public class WordCountControllerTest {
     public void shouldReturnFileContentsWhenFileUploaded() {
 
         when(mockFileParser.parseFile(mockMultipartFile)).thenReturn("Hi There");
+        when(mockWordCounter.getWordCountStatsFrom("Hi There")).thenReturn(exampleWordCountStats);
 
         String parsedFileContents = wordCountController.uploadFile(mockMultipartFile, mockRedirectAttributes);
 
@@ -70,6 +83,7 @@ public class WordCountControllerTest {
     @Test
     public void shouldCountWords(){
         when(mockFileParser.parseFile(mockMultipartFile)).thenReturn("Hi There");
+        when(mockWordCounter.getWordCountStatsFrom("Hi There")).thenReturn(exampleWordCountStats);
 
         String parsedFileContents = wordCountController.uploadFile(mockMultipartFile, mockRedirectAttributes);
 
