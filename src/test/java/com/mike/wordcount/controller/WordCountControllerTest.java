@@ -66,26 +66,26 @@ public class WordCountControllerTest {
         verify(mockFileParser).parseFile(mockMultipartFile);
     }
 
-//    @Test
-//    public void shouldReturnFileContentsWhenFileUploaded() {
-//
-//        when(mockFileParser.parseFile(mockMultipartFile)).thenReturn("Hi There");
-//        when(mockWordCounter.getWordCountStatsFrom("Hi There")).thenReturn(exampleWordCountStats);
-//
-//        String parsedFileContents = wordCountController.uploadFile(mockMultipartFile, mockRedirectAttributes);
-//
-//        assert(parsedFileContents.equals("Hi There"));
-//    }
+    @Test
+    public void shouldReturnFileContentsWhenFileUploaded() {
 
-//    @Test
-//    public void shouldCountWords(){
-//        when(mockFileParser.parseFile(mockMultipartFile)).thenReturn("Hi There");
-//        when(mockWordCounter.getWordCountStatsFrom("Hi There")).thenReturn(exampleWordCountStats);
-//
-//        String parsedFileContents = wordCountController.uploadFile(mockMultipartFile, mockRedirectAttributes);
-//
-//        verify(mockWordCounter).getWordCountStatsFrom(parsedFileContents);
-//    }
+        when(mockFileParser.parseFile(mockMultipartFile)).thenReturn("Hi There");
+        when(mockWordCounter.getWordCountStatsFrom("Hi There")).thenReturn(exampleWordCountStats);
+
+        String resultOutput = wordCountController.uploadFile(mockMultipartFile, mockRedirectAttributes);
+
+        assert(resultOutput.equals("Word count = 3<br>Average word length = 0.000<br>The most frequently occurring word length is 4, for word lengths of 3"));
+    }
+
+    @Test
+    public void shouldCountWords(){
+        when(mockFileParser.parseFile(mockMultipartFile)).thenReturn("Word count = 3<br>Average word length = 0.000<br>The most frequently occurring word length is 4, for word lengths of 3");
+        when(mockWordCounter.getWordCountStatsFrom("Word count = 3<br>Average word length = 0.000<br>The most frequently occurring word length is 4, for word lengths of 3")).thenReturn(exampleWordCountStats);
+
+        String parsedFileContents = wordCountController.uploadFile(mockMultipartFile, mockRedirectAttributes);
+
+        verify(mockWordCounter).getWordCountStatsFrom(parsedFileContents);
+    }
 
     private void createMockMultipartFile() {
         mockMultipartFile
