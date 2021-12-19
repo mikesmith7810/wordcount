@@ -12,7 +12,7 @@ import java.util.Iterator;
 @Service
 public class WordCounter {
     public WordCountStats getWordCountStatsFrom(String parsedFileContents) {
-        String[] words = parsedFileContents.split(" ");
+        String[] words = parsedFileContents.split(" +");
 
         return getWordCountStats(words);
     }
@@ -31,6 +31,9 @@ public class WordCounter {
             formattedWord = removeFullStops(exampleWords[i]);
 
             int lengthOfWord = formattedWord.length();
+
+            if (lengthOfWord==0)
+                System.out.println("'"+exampleWords[i]+"'");
 
             if (wordLengths.get(lengthOfWord)==null) {
                 wordLengths.put(lengthOfWord, 1);
