@@ -51,19 +51,11 @@ public class WordCountControllerTest {
     }
 
     @Test
-    public void shouldReadFile() {
-
-        wordCountController.getWordCountFor();
-
-        verify(mockFileParser).readFile(anyString());
-    }
-
-    @Test
     public void shouldCallFileParser() {
 
         when(mockFileParser.parseFile(mockMultipartFile)).thenReturn("Hi There");
         when(mockWordCounter.getWordCountStatsFrom("Hi There")).thenReturn(exampleWordCountStats);
-        
+
         wordCountController.uploadFile(mockMultipartFile, mockRedirectAttributes);
 
         verify(mockFileParser).parseFile(mockMultipartFile);

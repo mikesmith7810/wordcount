@@ -27,12 +27,6 @@ public class WordCountControllerMockMvcTest {
     private WebApplicationContext webApplicationContext;
 
     @Test
-    public void shouldReturnOkWhenWordCountInvoked() throws Exception {
-        this.mockMvc.perform(get("/wordcount")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(any(String.class)));
-    }
-
-    @Test
     public void shouldReturnOkWhenFileUploadInvoked() throws Exception {
         MockMultipartFile file
                 = new MockMultipartFile(
