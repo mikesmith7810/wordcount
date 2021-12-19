@@ -15,6 +15,9 @@ import java.util.Map;
 @RestController
 public class WordCountController {
 
+    public static final String CARRIAGE_RETURN = "<br>";
+    public static final String COMMA = ", ";
+    public static final String AMPERSAND = " & ";
     @Autowired
     private FileParser fileParser;
 
@@ -26,19 +29,31 @@ public class WordCountController {
 
         String parsedFile = getFileParser().parseFile(file);
         WordCountStats wordCountStats = getWordCounter().getWordCountStatsFrom(parsedFile);
-        System.out.println(parsedFile);
-        System.out.println(wordCountStats.getNumberOfWords());
-        System.out.println(String.format("%.3f",wordCountStats.getAverageWordLength()));
-        Iterator wordLengthsIterator = wordCountStats.getWordLengths().entrySet().iterator();
 
+
+        String textOutput =
+                "Word count = "+ wordCountStats.getNumberOfWords() + CARRIAGE_RETURN +
+                "Average word length = "+ String.format("%.3f",wordCountStats.getAverageWordLength()) + CARRIAGE_RETURN;
+
+        Iterator wordLengthsIterator = wordCountStats.getWordLengths().entrySet().iterator();
 
         while (wordLengthsIterator.hasNext()) {
             Map.Entry mapElement = (Map.Entry)wordLengthsIterator.next();
-            System.out.println("Number of Words with a length of " + mapElement.getKey() + " is "+mapElement.getValue());
+            textOutput = textOutput + "Number of words of length " + mapElement.getKey() + " is "+ mapElement.getValue() + CARRIAGE_RETURN;
         }
+            textOutput = textOutput +
+            "The most frequently occurring word length is " +
+            wordCountStats.getMostFrequentlyOccuringLength().get(0).getValue() + COMMA +
+            "for word lengths of ";
+            for (int i=0;i<wordCountStats.getMostFrequentlyOccuringLength().size();i++){
+                if (i!=wordCountStats.getMostFrequentlyOccuringLength().size()-1)
+                    textOutput = textOutput + wordCountStats.getMostFrequentlyOccuringLength().get(i).getKey() + AMPERSAND;
+                else
+                    textOutput = textOutput + wordCountStats.getMostFrequentlyOccuringLength().get(i).getKey();
+            }
 
 
-        return parsedFile ;
+        return textOutput ;
     }
 
     @PostMapping("/fileuploadjson")
@@ -57,7 +72,6 @@ public class WordCountController {
             Map.Entry mapElement = (Map.Entry)wordLengthsIterator.next();
             System.out.println("Number of Words with a length of " + mapElement.getKey() + " is "+mapElement.getValue());
         }
-
 
         return wordCountStats ;
     }
