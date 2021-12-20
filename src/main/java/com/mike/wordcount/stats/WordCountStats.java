@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 public class WordCountStats {
 
-
     private String fileContent;
 
     private int numberOfWords;

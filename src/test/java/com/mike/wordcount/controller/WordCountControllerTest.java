@@ -78,13 +78,23 @@ public class WordCountControllerTest {
     }
 
     @Test
-    public void shouldCountWords(){
+    public void shouldCountWordsForTextResponse(){
         when(mockFileParser.parseFile(mockMultipartFile)).thenReturn("Word count = 3<br>Average word length = 0.000<br>The most frequently occurring word length is 4, for word lengths of 3");
         when(mockWordCounter.getWordCountStatsFrom("Word count = 3<br>Average word length = 0.000<br>The most frequently occurring word length is 4, for word lengths of 3")).thenReturn(exampleWordCountStats);
 
         String parsedFileContents = wordCountController.uploadFile(mockMultipartFile, mockRedirectAttributes);
 
-        verify(mockWordCounter).getWordCountStatsFrom(parsedFileContents);
+        verify(mockWordCounter).getWordCountStatsFrom("Word count = 3<br>Average word length = 0.000<br>The most frequently occurring word length is 4, for word lengths of 3");
+    }
+
+    @Test
+    public void shouldCountWordsForJSONResponse(){
+        when(mockFileParser.parseFile(mockMultipartFile)).thenReturn("Word count = 3<br>Average word length = 0.000<br>The most frequently occurring word length is 4, for word lengths of 3");
+        when(mockWordCounter.getWordCountStatsFrom("Word count = 3<br>Average word length = 0.000<br>The most frequently occurring word length is 4, for word lengths of 3")).thenReturn(exampleWordCountStats);
+
+        WordCountStats wordCountStats = wordCountController.uploadFileForJSON(mockMultipartFile, mockRedirectAttributes);
+
+        verify(mockWordCounter).getWordCountStatsFrom("Word count = 3<br>Average word length = 0.000<br>The most frequently occurring word length is 4, for word lengths of 3");
     }
 
     private void createMockMultipartFile() {

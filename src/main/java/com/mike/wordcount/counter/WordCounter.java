@@ -18,6 +18,7 @@ public class WordCounter {
     }
 
     public WordCountStats getWordCountStats(String[] exampleWords) {
+
         WordCountStats wordCountStats = new WordCountStats();
 
         wordCountStats.setNumberOfWords(exampleWords.length);
@@ -28,12 +29,10 @@ public class WordCounter {
         int totalLength = 0;
 
         for (int i=0;i<exampleWords.length;i++){
+
             formattedWord = removeFullStops(exampleWords[i]);
 
             int lengthOfWord = formattedWord.length();
-
-            if (lengthOfWord==0)
-                System.out.println("'"+exampleWords[i]+"'");
 
             if (wordLengths.get(lengthOfWord)==null) {
                 wordLengths.put(lengthOfWord, 1);
@@ -42,7 +41,6 @@ public class WordCounter {
                 int currentNumberOfWordsWithLength = wordLengths.get(lengthOfWord);
                 wordLengths.put(lengthOfWord,currentNumberOfWordsWithLength + 1);
             }
-
 
             totalLength = totalLength + lengthOfWord;
         }
@@ -64,10 +62,12 @@ public class WordCounter {
 
         if (word.endsWith("."))
             word = word.substring(0,word.length()-1);
+
         return word;
     }
 
     public ArrayList<Pair> calculateMostCommonOccurringLength(HashMap<Integer, Integer> wordLengths) {
+
         Iterator wordLengthsIterator = wordLengths.entrySet().iterator();
         ArrayList<Pair> mostOccuringLengths = new ArrayList<>();
         int occurancesOfLength = 0;
@@ -79,7 +79,7 @@ public class WordCounter {
             int currentOccurancesOfLength = (Integer)lengthOccuranceEntry.getValue();
 
             if (currentOccurancesOfLength>occurancesOfLength) {
-                mostOccuringLengths = new ArrayList<Pair>();
+                mostOccuringLengths = new ArrayList<>();
                 mostOccuringLengths.add(new Pair(currentLength,currentOccurancesOfLength));
                 occurancesOfLength = currentOccurancesOfLength;
             }

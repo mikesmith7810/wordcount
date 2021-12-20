@@ -9,6 +9,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.hamcrest.Matchers.is;
+
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -31,7 +35,7 @@ public class FileParserTest {
         String parsedFile = fileParser.parseFile(mockMultipartFile);
 
         assertNotNull(parsedFile);
-        assert(parsedFile.equals("Hi There"));
+        assertThat(parsedFile, is("Hi There"));
     }
 
     private void createMockMultipartFile() {

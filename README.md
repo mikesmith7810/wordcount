@@ -1,39 +1,33 @@
 # wordcount
 
-assumptions based upon example
+###Assumptions based upon example
 
-fullstops should be ignored
+- fullstops should be ignored
+- special characters such as & are words
+- special characters in a word are considered part of the work - eg 18/07/2018
 
-special characters such as & are words
-
-special characters in a word are considered part of the work - eg 18/07/2018
-
-
-to build and run
+###To build, run tests and run
 
 ./mvnw clean package
 
 ./mvnw spring-boot:run
 
 
-To upload a file and see contents in json, goto
+###To upload a file and see contents in json -
 
-http://localhost:8080/index.html
-
-
-To upload a file and see contents as a formatted string (for th test output), goto
-
-http://localhost:8080/index2.html
+http://localhost:8080/indexJSON.html
 
 
-example files are in -
+###To upload a file and see contents as a formatted string (for required test output) -
+
+http://localhost:8080/indexText.html
+
+###Example test files are in -
 
 src/main/resources/examplesfiles
 
-bible_daily.txt
-
-test.txt
-
-test2.txt
+ - bible_daily.txt
+ - test.txt
+ - test2.txt
 
 

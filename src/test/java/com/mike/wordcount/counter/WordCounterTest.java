@@ -37,7 +37,6 @@ public class WordCounterTest {
         setExampleFileContents("Hi There, hope you're having a nice day!");
         setExampleWords(new String[]{"Hi", "There", "Nice", "To", "See", "You"});
 
-
         setExampleWordLengths(new HashMap<Integer, Integer>() {{
             put(1, 3);
             put(2, 6);
